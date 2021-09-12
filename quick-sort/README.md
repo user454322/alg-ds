@@ -1,13 +1,5 @@
-Analyze invariants in the loop
+[Quicksort interactive notebook](https://colab.research.google.com/drive/1xX80jRV2jtFHnpxqaSgt6H4E9kOVASzD?usp=sharing)
 
-Lomuto vs Hoare
-
-Space and complexity  
-　  Average, worst, best
-   
-   
-https://www.youtube.com/watch?v=eqo2LxRADhU
-
-https://www.youtube.com/watch?v=XE4VP_8Y0BU
+[Bucketsort interactive notebook](https://colab.research.google.com/drive/1mBJvjFFDEXHoq1au-yO8dVZAzET5F_Iy?usp=sharing)
 
 
