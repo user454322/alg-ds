@@ -53,25 +53,6 @@ public class AutoCompleteTrie {
         }
     }
 
-    public boolean search(final String word) {
-        if (word == null || word.length() == 0) {
-            return false;
-        }
-        Node node = root;
-        Map<Character, Node> subtree = node.children;
-        for (int level = 0; level < word.length(); level++) {
-            Character value = word.charAt(level);
-            if ( ! subtree.containsKey(value)) {
-                return false;
-            }
-            node = node.children.get(value);
-            subtree = node.children;
-        }
-
-        return node.isWord();
-    }
-
-
     public List<String> suggest(final String prefix) {
         List<String> suggestions = new ArrayList<>();
         Node node = root;
@@ -137,11 +118,11 @@ public class AutoCompleteTrie {
 
         System.out.println("Words in the trie " + words);
 
-        System.out.println(trie.search("ABAD"));
-        System.out.println(trie.search("ABADIA"));
-        System.out.println(trie.search("ABACO"));
-        System.out.println(trie.search("ABA"));
-        System.out.println();
+        // System.out.println(trie.search("ABAD"));
+        // System.out.println(trie.search("ABADIA"));
+        // System.out.println(trie.search("ABACO"));
+        // System.out.println(trie.search("ABA"));
+        // System.out.println();
 
         String prefix = "Y";
         System.out.println(format("Suggesting for %s", prefix));
