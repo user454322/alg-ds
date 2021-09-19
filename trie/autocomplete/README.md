@@ -19,10 +19,109 @@ This work was inspired by the [Implement TRIE | Leetcode #208 video](https://www
 ## The implementation
 As with any problem is important to conceptualize how the actual data structure looks like.
 
-Diagram of node
-Code of node
+![Node](node.jpg)
+Node  
 
-Transition to insert
 
-comment the suggest code  
+![Insert state transition](insert.jpg)
+Insert state transition  
 
+
+
+### The suggestions
+The method `suggest` returns a list of suggestions for the given prefix. See the method [in the class here](https://github.com/user454322/alg-ds/blob/main/trie/autocomplete/AutoCompleteTrie.java#L56-L77).
+
+```java
+public List<String> suggest(final String prefix) {
+        List<String> suggestions = new ArrayList<>();
+        Node node = root;
+        Map<Character, Node> subtree = root.children;
+        StringBuilder path = new StringBuilder();
+
+        // Travers the trie up to the given prefix
+        for (int level = 0; level < prefix.length(); level++) {
+            Character value = prefix.charAt(level);
+            node = subtree.get(value);
+            if (node == null) {
+                return emptyList();
+            }
+            path.append(value);
+            subtree = node.children;
+        }
+
+        // Search in the trie for words that start with the given prefix
+        findSuggestions(node, suggestions, path);
+
+        return suggestions;
+    }
+```
+
+It first traverses the tree up to the given key, then it keeps traversing the rest of the subtree calling the recursive method [findSuggestions](https://github.com/user454322/alg-ds/blob/main/trie/autocomplete/AutoCompleteTrie.java#L79-L99).
+
+```java
+// Recursive method used to find suggestions
+    private void findSuggestions(final Node node, final List<String> suggestions,
+                                 final StringBuilder path) {
+        if (node.isWord()) {
+            suggestions.add(path.toString());
+        }
+
+        Map<Character, Node> children = node.children;
+        if (children.isEmpty()) {
+            // We have reached a leaf node
+            return;
+        }
+
+        for (Node subtree : children.values()) {
+            // Traverse the subtree searching for words
+            path.append(subtree.value);
+            findSuggestions(subtree, suggestions, path);
+            path.setLength(path.length() - 1);
+        }
+    }
+```
+
+### Executing it
+
+![Trie](trie.jpg)
+Trie
+
+The code in the [main method](https://github.com/user454322/alg-ds/blob/main/trie/autocomplete/AutoCompleteTrie.java#L101)
+
+```java
+String prefix = "Y";
+        System.out.println(format("Suggesting for %s", prefix));
+        System.out.println(format("  %s", trie.suggest(prefix)));
+        System.out.println();
+
+        prefix = "A";
+        System.out.println(format("Suggesting for %s", prefix));
+        System.out.println(format("  %s", trie.suggest(prefix)));
+        System.out.println();
+
+        prefix = "ABA";
+        System.out.println(format("Suggesting for %s", prefix));
+        System.out.println(format("  %s", trie.suggest(prefix)));
+        System.out.println();
+
+        prefix = "X";
+        System.out.println(format("Suggesting for %s", prefix));
+        System.out.println(format("  %s", trie.suggest(prefix)));
+```
+
+produces
+
+```
+Words in the trie [ABAD, ABACO, ASTRAZENECA, BACHILLER, CAMILLA, ETHER, MARXISM, STELLAR, XLM]
+Suggesting for Y
+  []
+
+Suggesting for A
+  [ABACO, ABAD, ASTRAZENECA]
+
+Suggesting for ABA
+  [ABACO, ABAD]
+
+Suggesting for X
+  [XLM]
+```
